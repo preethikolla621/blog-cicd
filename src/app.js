@@ -22,9 +22,4 @@ app.post('/posts', (req, res) => {
   res.status(201).json(newPost);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
 module.exports = app;
