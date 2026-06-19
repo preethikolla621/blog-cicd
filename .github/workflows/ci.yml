@@ -28,7 +28,13 @@ jobs:
           node-version: '18'
           cache: 'npm'
       - run: npm ci
-      - run: npm test
+      - name: Run tests with coverage
+        run: npm run test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
 
   build-and-push:
     runs-on: ubuntu-latest
@@ -88,7 +94,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "✅ *Pipeline PASSED & DEPLOYED!*\n*Branch:* ${{ github.ref_name }}\n*By:* ${{ github.actor }}\n*Live at:* http://16.171.57.205"
+              "text": "Pipeline PASSED and deployed. Branch: ${{ github.ref_name }}. Live at http://16.171.57.205"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -100,7 +106,7 @@ jobs:
         with:
           payload: |
             {
-              "text": "❌ *Pipeline FAILED!*\n*Branch:* ${{ github.ref_name }}\n*By:* ${{ github.actor }}"
+              "text": "Pipeline FAILED. Branch: ${{ github.ref_name }}"
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
